@@ -3,11 +3,12 @@
  * Handles fire input, muzzle flash, ammo management, and reload.
  * Server-authoritative for hit detection.
  */
-var ShootingSystem = function (app, camera, networkManager, mobileControls) {
+var ShootingSystem = function (app, camera, networkManager, mobileControls, weaponViewmodel) {
   this.app = app;
   this.camera = camera;
   this.network = networkManager;
   this.mobile = mobileControls;
+  this.weapon = weaponViewmodel;
 
   this.ammo = 30;
   this.maxAmmo = 30;
@@ -17,35 +18,13 @@ var ShootingSystem = function (app, camera, networkManager, mobileControls) {
   this.isMouseDown = false;
   this.isMobileFiring = false;
 
-  // Muzzle flash entity
-  this.muzzleFlash = null;
-  this._createMuzzleFlash();
   this._bindInputs();
 
-  // Wire mobile controls
   var self = this;
   if (this.mobile) {
     this.mobile.onFire = function () { self.isMobileFiring = true; };
     this.mobile.onReload = function () { self.reload(); };
   }
-};
-
-ShootingSystem.prototype._createMuzzleFlash = function () {
-  this.muzzleFlash = new pc.Entity('muzzle-flash');
-  this.muzzleFlash.addComponent('render', {
-    type: 'sphere',
-    radius: 0.05
-  });
-  var mat = new pc.StandardMaterial();
-  mat.diffuse = new pc.Color(1, 0.8, 0);
-  mat.emissive = new pc.Color(1, 0.8, 0);
-  mat.update();
-  this.muzzleFlash.render.meshInstances[0].material = mat;
-  this.muzzleFlash.enabled = false;
-
-  // Attach to camera
-  this.camera.addChild(this.muzzleFlash);
-  this.muzzleFlash.setLocalPosition(0.2, -0.15, -0.5);
 };
 
 ShootingSystem.prototype._bindInputs = function () {
@@ -94,37 +73,21 @@ ShootingSystem.prototype.fire = function () {
   // Send to server
   this.network.sendShoot();
 
-  // Muzzle flash
-  this._showMuzzleFlash();
-
-  // Camera recoil
-  this._applyRecoil();
-};
-
-ShootingSystem.prototype._showMuzzleFlash = function () {
-  if (!this.muzzleFlash) return;
-  this.muzzleFlash.enabled = true;
-  var self = this;
-  setTimeout(function () {
-    if (self.muzzleFlash) self.muzzleFlash.enabled = false;
-  }, 50);
-};
-
-ShootingSystem.prototype._applyRecoil = function () {
-  // Small upward kick
-  var pitch = this.camera.getEulerAngles().x;
-  this.camera.setEulerAngles(pitch + 0.5, this.camera.getEulerAngles().y, 0);
+  // Weapon recoil
+  if (this.weapon) this.weapon.setRecoil(1.0);
 };
 
 ShootingSystem.prototype.setAmmo = function (ammo) {
   this.ammo = ammo;
 };
 
-ShootingSystem.prototype.update = function () {
+ShootingSystem.prototype.update = function (isMoving) {
   // Auto-fire on hold
   if (this.isMouseDown) this.fire();
   if (this.isMobileFiring) {
     this.fire();
     this.isMobileFiring = false;
   }
+  // Update weapon bob
+  if (this.weapon) this.weapon.update(0.016, isMoving);
 };

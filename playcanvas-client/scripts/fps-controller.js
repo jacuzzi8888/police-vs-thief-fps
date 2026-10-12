@@ -181,6 +181,8 @@ FpsController.prototype.update = function (dt) {
     x: this.position.x,
     y: this.position.y,
     z: this.position.z,
-    rotY: this.yaw
+    rotY: this.yaw,
+    moveX: moveX,
+    moveZ: moveZ
   };
 };

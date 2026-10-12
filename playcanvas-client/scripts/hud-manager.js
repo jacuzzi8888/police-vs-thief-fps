@@ -4,7 +4,6 @@
  */
 var HudManager = function () {
   this._healthBar = document.getElementById('health-bar');
-  this._healthText = document.getElementById('health-text');
   this._ammoCurrent = document.getElementById('ammo-current');
   this._ammoMax = document.getElementById('ammo-max');
   this._policeScore = document.getElementById('police-score');
@@ -30,15 +29,12 @@ HudManager.prototype.hide = function () {
 HudManager.prototype.updateHealth = function (health) {
   var pct = Math.max(0, Math.min(100, health));
   this._healthBar.style.width = pct + '%';
-  this._healthText.textContent = Math.round(pct);
-
-  // Color transition
   if (pct > 60) {
-    this._healthBar.style.background = 'linear-gradient(90deg, #4caf50, #8bc34a)';
+    this._healthBar.style.background = '#33cc33';
   } else if (pct > 30) {
-    this._healthBar.style.background = 'linear-gradient(90deg, #ff9800, #ffc107)';
+    this._healthBar.style.background = '#ddaa22';
   } else {
-    this._healthBar.style.background = 'linear-gradient(90deg, #f44336, #e57373)';
+    this._healthBar.style.background = '#dd3333';
   }
 };
 
@@ -58,14 +54,10 @@ HudManager.prototype.addKillMessage = function (message) {
   entry.textContent = message;
   this._killFeed.appendChild(entry);
   this.killFeedEntries.push(entry);
-
-  // Auto-remove old entries
   if (this.killFeedEntries.length > this.maxKillFeed) {
     var old = this.killFeedEntries.shift();
     if (old && old.parentNode) old.parentNode.removeChild(old);
   }
-
-  // Fade out after 5 seconds
   setTimeout(function () {
     if (entry.parentNode) entry.parentNode.removeChild(entry);
     var idx = this.killFeedEntries.indexOf(entry);
@@ -76,7 +68,6 @@ HudManager.prototype.addKillMessage = function (message) {
 HudManager.prototype.showDeathScreen = function (killerMessage) {
   this._deathScreen.classList.remove('hidden');
   this._deathInfo.textContent = killerMessage || 'You were eliminated!';
-
   var timer = 3;
   this._respawnTimer.textContent = timer;
   var self = this;

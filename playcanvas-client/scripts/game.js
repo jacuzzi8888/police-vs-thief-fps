@@ -42,7 +42,8 @@
   var mobileControls = new MobileControls(fpsController);
   var networkManager = new NetworkManager(app, sceneRoot);
   var teamManager = new TeamManager();
-  var shootingSystem = new ShootingSystem(app, camera, networkManager, mobileControls);
+  var weaponViewmodel = new WeaponViewmodel(app, camera);
+  var shootingSystem = new ShootingSystem(app, camera, networkManager, mobileControls, weaponViewmodel);
   var mapBuilder = new MapBuilder(app, sceneRoot);
   var hudManager = new HudManager();
   var menuManager = new MenuManager();
@@ -113,8 +114,10 @@
     var state = fpsController.update(dt);
     if (!state) return;
 
-    // Update shooting
-    shootingSystem.update();
+    var isMoving = (Math.abs(state.moveX || 0) > 0.1 || Math.abs(state.moveZ || 0) > 0.1);
+
+    // Update shooting + weapon bob
+    shootingSystem.update(isMoving);
 
     // Sync position to server (throttled)
     var now = Date.now();
