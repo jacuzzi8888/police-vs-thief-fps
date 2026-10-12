@@ -13,7 +13,7 @@ var FpsController = function (app, camera, ground) {
   this.jumpForce = 8;
   this.gravity = -20;
   this.velocity = new pc.Vec3(0, 0, 0);
-  this.position = new pc.Vec3(0, 1, 0);
+  this.position = new pc.Vec3(0, 1.6, 0);
   this.yaw = 0;
   this.pitch = 0;
   this.isGrounded = true;
@@ -167,9 +167,9 @@ FpsController.prototype.update = function (dt) {
   this.velocity.y += this.gravity * dt;
   this.position.y += this.velocity.y * dt;
 
-  // Ground collision (simple plane at y=1)
-  if (this.position.y <= 1) {
-    this.position.y = 1;
+  // Ground collision (eye level at 1.6)
+  if (this.position.y <= 1.6) {
+    this.position.y = 1.6;
     this.velocity.y = 0;
     this.isGrounded = true;
   }

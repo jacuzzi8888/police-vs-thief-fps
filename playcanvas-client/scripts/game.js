@@ -34,7 +34,7 @@
     nearClip: 0.1,
     farClip: 500
   });
-  camera.setPosition(0, 1, 0);
+  camera.setPosition(0, 1.6, 0);
   sceneRoot.addChild(camera);
 
   // Initialize all systems

@@ -147,7 +147,7 @@ NetworkManager.prototype._syncRemotePlayer = function (sessionId, data) {
     entity.enabled = false;
   } else {
     entity.enabled = true;
-    entity.setPosition(data.x, data.y + 0.9, data.z);
+    entity.setPosition(data.x, data.y - 0.7, data.z);
     entity.setEulerAngles(0, data.rotY * (180 / Math.PI), 0);
   }
 
@@ -171,7 +171,7 @@ NetworkManager.prototype._createRemotePlayer = function (sessionId, data) {
   bodyEntity.render.meshInstances[0].material.update();
 
   entity.addChild(bodyEntity);
-  entity.setPosition(data.x, data.y + 0.9, data.z);
+  entity.setPosition(data.x, data.y - 0.7, data.z);
   this.sceneRoot.addChild(entity);
   this.remotePlayers[sessionId] = entity;
   return entity;
