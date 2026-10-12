@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Police vs Thief - Lagos FPS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- PlayCanvas Engine -->
+  <script src="https://code.playcanvas.com/playcanvas-stable.js"></script>
+</head>
+<body>
+  <!-- Main Menu -->
+  <div id="main-menu">
+    <div class="menu-container">
+      <h1 class="game-title">POLICE vs THIEF</h1>
+      <h2 class="game-subtitle">Lagos Streets</h2>
+      <div class="menu-form">
+        <input type="text" id="player-name" placeholder="Enter your name" maxlength="16">
+        <button id="btn-join" class="btn-primary">Join Match</button>
+      </div>
+      <div id="connection-status" class="status-text"></div>
+    </div>
+  </div>
+
+  <!-- Death Screen -->
+  <div id="death-screen" class="hidden">
+    <div class="death-content">
+      <h1>ELIMINATED</h1>
+      <p id="death-info">Respawning...</p>
+      <div id="respawn-timer">3</div>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <!-- Crosshair -->
+    <div id="crosshair">
+      <div class="crosshair-h"></div>
+      <div class="crosshair-v"></div>
+    </div>
+
+    <!-- Health Bar -->
+    <div id="health-bar-container">
+      <div id="health-bar"></div>
+      <span id="health-text">100</span>
+    </div>
+
+    <!-- Ammo -->
+    <div id="ammo-display">
+      <span id="ammo-current">30</span> / <span id="ammo-max">30</span>
+    </div>
+
+    <!-- Score -->
+    <div id="score-display">
+      <span id="police-score" class="team-police">0</span>
+      <span class="score-divider">-</span>
+      <span id="thief-score" class="team-thief">0</span>
+    </div>
+
+    <!-- Team Indicator -->
+    <div id="team-indicator">
+      <span id="team-label">POLICE</span>
+    </div>
+
+    <!-- Kill Feed -->
+    <div id="kill-feed"></div>
+
+    <!-- Reload indicator -->
+    <div id="reload-indicator" class="hidden">RELOADING...</div>
+  </div>
+
+  <!-- Mobile Controls -->
+  <div id="mobile-controls" class="hidden">
+    <!-- Left Joystick -->
+    <div id="joystick-zone">
+      <div id="joystick-base">
+        <div id="joystick-stick"></div>
+      </div>
+    </div>
+
+    <!-- Right Touch Look Area -->
+    <div id="look-zone"></div>
+
+    <!-- Action Buttons -->
+    <div id="mobile-buttons">
+      <button id="btn-fire" class="mobile-btn btn-fire">FIRE</button>
+      <button id="btn-jump" class="mobile-btn btn-jump">JUMP</button>
+      <button id="btn-reload" class="mobile-btn btn-reload">R</button>
+    </div>
+  </div>
+
+  <!-- PlayCanvas Canvas Container -->
+  <canvas id="application-canvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="scripts/fps-controller.js"></script>
+  <script src="scripts/mobile-controls.js"></script>
+  <script src="scripts/network-manager.js"></script>
+  <script src="scripts/team-manager.js"></script>
+  <script src="scripts/shooting-system.js"></script>
+  <script src="scripts/map-builder.js"></script>
+  <script src="scripts/hud-manager.js"></script>
+  <script src="scripts/menu-manager.js"></script>
+  <script src="scripts/game.js"></script>
+</body>
+</html>
