@@ -29,7 +29,8 @@
   // Camera
   var camera = new pc.Entity('PlayerCamera');
   camera.addComponent('camera', {
-    clearColor: new pc.Color(0.55, 0.7, 0.85),
+    clearColor: new pc.Color(0.42, 0.68, 0.92),
+    clearColorBuffer: true,
     fov: 75,
     nearClip: 0.1,
     farClip: 500
@@ -133,7 +134,7 @@
     }
   });
 
-  // Handle resize - force canvas to fill viewport
+  // Handle resize
   function doResize() {
     var w = window.innerWidth;
     var h = window.innerHeight;
@@ -141,13 +142,19 @@
     canvas.height = h;
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
-    app.resizeCanvas(w, h);
   }
-  window.addEventListener('resize', doResize);
+  window.addEventListener('resize', function () {
+    doResize();
+    app.resizeCanvas(window.innerWidth, window.innerHeight);
+  });
+  doResize();
 
   // Start the application
   app.start();
-  doResize();
+  app.resizeCanvas(canvas.width, canvas.height);
+
+  // Force sky blue clear color after init (survives resize)
+  app.scene.clearColor = new pc.Color(0.42, 0.68, 0.92);
 
   console.log('Police vs Thief - Lagos FPS initialized');
   console.log('Waiting for player to join...');
